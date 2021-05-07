@@ -7,35 +7,35 @@ url='https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
 
 r = requests.get(url)
 
-if r.ok:
-    soup = BeautifulSoup(r.text, "html.parser")
-    product_page_url = url
+with open('livre_info.csv','w') as outf:
+  outf.write('product_page_url,universal_ product_code,title,price_including_tax,price_excluding_tax,number_available,product_description,category,review_rating/5,image_url/n')
 
-    """
-    price_including_tax = soup.find('tr' , {'id': 'incl'}).find('td')
-    price_excluding_tax = soup.fin('tr' , {'id': 'excl'}).find('td')
-    number_available = soup.fin('tr' , {'id': 'Availability'}).find('td')
-    """
-    trs = soup.findAll('tr')
-    title = soup.h1.text
-    description = soup.findAll('p')
-    rating = soup.find('p' , {'class': 'star-rating '})
-    soup.article.children
+  if r.ok:
+      soup = BeautifulSoup(r.text, "html.parser")
+
+
+      product_page_url = url
+      trs = soup.findAll('tr')
+      title = soup.h1.text
   
-  
+      bread =  soup.find("ul", { "class" : "breadcrumb" }).find('li')
+      categorie = bread.next_sibling.next_sibling.next_sibling.next_sibling.text
+      description = soup.find("article", { "class" : "product_page" }).find("p", recursive=False).text
+      image = soup.img['src']
+      star = soup.find('p', class_="star-rating")
+      rating = star.get('class')[1] 
     
-    
-    """
-    for tr in trs:
-        if tr.th.text == 'UPC':
-          print(tr.td.text)
-        if tr.th.text == 'Price (excl. tax)':
-          print(tr.td.text)
-        if tr.th.text == 'Price (incl. tax)':
-          print(tr.td.text)
-        if tr.th.text == 'Availability':
-          print(tr.td.text)
-"""
+      for tr in trs:
+          if tr.th.text == 'UPC':
+            upc = tr.td.text
+          if tr.th.text == 'Price (excl. tax)':
+            price_excl_tax = tr.td.text
+          if tr.th.text == 'Price (incl. tax)':
+            price_incl_tax = tr.td.text
+          if tr.th.text == 'Availability':
+            availability = tr.td.text
+          outf.write(url + ',' + upc + ',' + title + ',' + price_incl_tax + ',' + price_excl_tax + ',' + availability + ',' + description + ',' + categorie + ',' + rating + ',' image +'\n')
+          
 
 
    
