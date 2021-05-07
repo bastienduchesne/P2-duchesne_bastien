@@ -8,8 +8,9 @@ url='https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
 
 r = requests.get(url)
 
-with open('livre_info.csv','w') as outf:
-  outf.write('product_page_url,universal_ product_code,title,price_including_tax,price_excluding_tax,number_available,product_description,category,review_rating/5,image_url/n')
+with open('livre_info.csv','w', newline='') as outf:
+  writer = csv.writer(outf)
+  writer.writerows('product_page_url,universal_ product_code,title,price_including_tax,price_excluding_tax,number_available,product_description,category,review_rating/5,image_url/n')
   if r.ok:
     soup = BeautifulSoup(r.text, "html.parser")
     product_page_url = url
@@ -32,7 +33,7 @@ with open('livre_info.csv','w') as outf:
         price_incl_tax = tr.td.text
       if tr.th.text == 'Availability':
         availability = tr.td.text
-      outf.write(url + ',' + upc + ',' + title + ',' + price_incl_tax + ',' + price_excl_tax + ',' + availability + ',' + description + ',' + categorie + ',' + rating + ',' image +'\n')
+    writer.writerows(url + ',' + upc + ',' + title + ',' + price_incl_tax + ',' + price_excl_tax + ',' + availability + ',' + description + ',' + categorie + ',' + rating + ',' + image + '/n')
           
 
 
