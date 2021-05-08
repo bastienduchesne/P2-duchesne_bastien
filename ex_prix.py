@@ -3,14 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 
 
-with open('players.csv', 'w', newline='') as file:
-    fieldnames = ['player_name', 'fide_rating']
-    writer = csv.DictWriter(file, fieldnames=fieldnames)
 
-    writer.writeheader()
-    writer.writerow({'player_name': 'Magnus Carlsen', 'fide_rating': 2870})
-    writer.writerow({'player_name': 'Fabiano Caruana', 'fide_rating': 2822})
-    writer.writerow({'player_name': 'Ding Liren', 'fide_rating': 2801})
 url='https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html'
 
 r = requests.get(url)
@@ -38,14 +31,13 @@ if r.ok:
     if tr.th.text == 'Availability':
       availability = tr.td.text
 
-"""
-with open('livre_info.csv','w', newline='') as outf:
+
+with open('livre_info.csv','w', newline='') as file:
   fieldnames = ['product_page_url','universal_ product_code','title','price_including_tax','price_excluding_tax','number_available','product_description','category','review_rating/5','image_url']
-  writer = csv.DictWriter(outf, fieldnames=fieldnames)
+  writer = csv.DictWriter(file, fieldnames=fieldnames)
   writer.writeheader()
-  writer.writerow({'product_page_url': url})
-     #writer.writerow({'product_page_url':url,'universal_ product_code','title','price_including_tax','price_excluding_tax','number_available','product_description','category','review_rating/5','image_url'
-   # writer.writerow(url + ',' + upc + ',' + title + ',' + price_incl_tax + ',' + price_excl_tax + ',' + availability + ',' + description + ',' + categorie + ',' + rating + ',' + image + '/n')
-   """
+  writer.writerow({'product_page_url': url ,'universal_ product_code' : upc ,'title': title ,'price_including_tax' : price_incl_tax ,'price_excluding_tax' : price_excl_tax ,'number_available' : availability ,'product_description' :  description ,'category' : categorie ,'review_rating/5' : rating ,'image_url' : image})
+ 
+   
 
 
